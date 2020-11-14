@@ -24,6 +24,6 @@ Requirement: Develop rest API using Java, Spring Boot, and REST
 2.	Test data is persisted in H2 database. The data is loaded from data.sql file in the project. url for h2 database console http://localhost:8080/h2
 
 ### Alternative solution:
-For this use case **CQRS** pattern may be a good candidate, where the data model for inserts and the aggregated data we query for reads is different. Implementing a Rest API to query the aggregated data model. 
-
 This solution is for POC purpose only. However, in real time environments, for each transaction inserts or updates, a trigger-based capturing of the aggregates in database.Then querying already aggregated data from data gives better scalability and performance and control via the Rest API. 
+
+For this use case **CQRS** pattern may be a good candidate, where the data model for inserts and the aggregated data we query for reads is different. Implementing a Rest API to query the aggregated data model. 
