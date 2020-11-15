@@ -1,36 +1,16 @@
 package com.customerrewards.dto;
 
-
-
+import lombok.ToString;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class TransactionSummaryDto {
 
 	private String month;
 	private float rewardsPoints;
-
-	public TransactionSummaryDto() {
-
-	}
-
-	public TransactionSummaryDto(String month, float rewardsPoints) {
-		super();
-		this.month = month;
-		this.rewardsPoints = rewardsPoints;
-	}
-
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public float getRewardsPoints() {
-		return rewardsPoints;
-	}
-
-	public void setRewardsPoints(float rewardsPoints) {
-		this.rewardsPoints = rewardsPoints;
-	}
 
 }

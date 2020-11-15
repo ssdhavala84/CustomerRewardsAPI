@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CustomerRewardExceptionController {
 
 	@ResponseBody
-	@ExceptionHandler(CustomerRewardNotFoundException.class)
-	public ResponseEntity<StatusMessage> exception(CustomerRewardNotFoundException c) {
+	@ExceptionHandler(CustomerRewardException.class)
+	public ResponseEntity<StatusMessage> exception(CustomerRewardException c) {
 
 		StatusMessage sm = new StatusMessage(c.getCode(), c.getMessage());
 
 		if (c.getCode() == 400) {
 			return new ResponseEntity<>(sm, HttpStatus.BAD_REQUEST);
-		} else if (c.getCode() == 401) {
+		} else if (c.getCode() == 404) {
 			return new ResponseEntity<>(sm, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(sm, HttpStatus.INTERNAL_SERVER_ERROR);
