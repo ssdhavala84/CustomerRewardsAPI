@@ -22,7 +22,10 @@ Requirement: Develop rest API using Java, Spring Boot, and REST
 > Note: Have used the default port 8080, this can be changed if the port is occupied with a different value in application.properties file server.port
 > Note: Only monthly data summary being captured, with 3 months summary being the default. However, by changing depth query parameter value from [1 to12] respective depth monthly summary can be obtained
 2.	Test data is persisted in H2 database. The data is loaded from data.sql file in the project. url for h2 database console http://localhost:8080/h2
-
+3. Performed a load test with 900k records
+>Time to retrieve Data : PT6.156S
+>Time take for transformation : PT0.268S
+>Overall ResponseTime  : PT6.425S
 ### Scalable solution:
 This solution is for POC purpose. However, in real time environments, for each transaction inserts or updates, a trigger-based capturing of the aggregates in database.Then querying already aggregated data from data gives better scalability and performance and control via the Rest API. 
 
