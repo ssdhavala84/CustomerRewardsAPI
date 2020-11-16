@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.customerrewards.dto.CustomerRewardSummaryDto;
+import com.customerrewards.dto.CustomerRewardSummary;
 import com.customerrewards.exception.CustomerRewardException;
 import com.customerrewards.service.ICustomerRewardsSvc;
 
@@ -27,20 +27,18 @@ public class CustomerRewardsController {
 	private ICustomerRewardsSvc customerRewardsSvc;
 
 	@GetMapping("/rewards")
-	public ResponseEntity<List<CustomerRewardSummaryDto>> getMonthlyCustomerRecords(
-			@RequestParam(defaultValue = "monthly") final String summary, @RequestParam(defaultValue = "3") final int depth) {
-       
+	public ResponseEntity<List<CustomerRewardSummary>> getMonthlyCustomerRecords(
+			@RequestParam(defaultValue = "monthly") final String summary,
+			@RequestParam(defaultValue = "3") final int depth) {
+
 		Instant startTime = Instant.now();
-		
+
 		validateQueryParams(summary, depth);
 
-		final List<CustomerRewardSummaryDto> list = customerRewardsSvc.getCustomerRewardsSummary(summary, depth);
-
-		Instant endTime = Instant.now();
-		log.info("Processing Time : "+ Duration.between(startTime, endTime));
+		final List<CustomerRewardSummary> list = customerRewardsSvc.getCustomerRewardsSummary(summary, depth);
+		log.info("Overall ResponseTime  : " + Duration.between(startTime, Instant.now()));
 		return new ResponseEntity<>(list, HttpStatus.OK);
-		
-		
+
 	}
 
 	private void validateQueryParams(final String summary, int depth) {

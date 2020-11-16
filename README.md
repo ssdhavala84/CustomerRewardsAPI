@@ -9,7 +9,7 @@ Requirement: Develop rest API using Java, Spring Boot, and REST
 
 ### Tools and technologies used: 
 - **IDE:**   Spring Tool Suite 4 ,Version: 4.7.0.RELEASE, Build Id: 202006181331
-- **Java:**   version:  1.8 
+- **Java:**   version:  11 
 - **Database:** In memory H2 database for persistence
 - **Testing**: Postman
 

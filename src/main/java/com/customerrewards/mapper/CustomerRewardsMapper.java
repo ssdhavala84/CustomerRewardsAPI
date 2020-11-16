@@ -9,27 +9,39 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.customerrewards.dto.CustomerRewardSummaryDto;
+import com.customerrewards.dto.CustomerRewardSummary;
 import com.customerrewards.dto.TransactionSummaryDto;
 import com.customerrewards.entity.CustomerReward;
 import com.customerrewards.repository.ICustomerRewardsRepository;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @NoArgsConstructor
 public class CustomerRewardsMapper {
 	@Autowired
 	public ICustomerRewardsRepository customerRewardRepository;
 
-
-
-	public List<CustomerRewardSummaryDto> convertEntityToDto(final List<CustomerReward> customerRewards) {
+	/**
+	 * <p>Transforms the List of CustomerRewards data Entity  records into a Dto List
+	 *    This helps in in transformation transformation of flat data format from table into 
+	 *    hierarchical response message format. 
+	 *    
+	 *    As part of the transformation it creates a summary list of cumulative reward points 
+	 *    for each customer for the number of months requested. 
+	 *    default summary data will be provided for 3 months summary list
+	 *    reward points
+	 * </p>
+	 * @param List<CustomerReward> representing flat data format representing data from database table
+	 * @return List<CustomerRewardSummary> object representing hierarchical response message format 
+	 */
+	public List<CustomerRewardSummary> convertEntityToDto(final List<CustomerReward> customerRewards) {
 		Instant startTime = Instant.now();
 
 		final Map<String, List<Map<String, Float>>> custMap = convertEntityToMap(customerRewards);
 
-		final List<CustomerRewardSummaryDto> crSummaryDto = new ArrayList<>();
+		final List<CustomerRewardSummary> crSummaryList = new ArrayList<>();
 
 		for (Entry<String, List<Map<String, Float>>> entry : custMap.entrySet()) {
 
@@ -50,18 +62,13 @@ public class CustomerRewardsMapper {
 
 				}
 			}
-
-			final CustomerRewardSummaryDto crDto = CustomerRewardSummaryDto.builder()
-					.customerName(customerName)
-					.totalPoints(totalPoints)
-					.transactionSummary(transactionsDto)
-					.build();
-
-			crSummaryDto.add(crDto);
+			
+			crSummaryList.add(CustomerRewardSummary.builder().customerName(customerName).totalPoints(totalPoints)
+					.transactionSummary(transactionsDto).build());
 		}
-		Instant endTime = Instant.now();
-		log.info("Processing Time : "+ Duration.between(startTime, endTime));
-		return crSummaryDto;
+		
+		log.info("Time take for transformation : " + Duration.between(startTime, Instant.now()));
+		return crSummaryList;
 	}
 
 	private Map<String, List<Map<String, Float>>> convertEntityToMap(final List<CustomerReward> customerRewards) {
@@ -107,6 +114,16 @@ public class CustomerRewardsMapper {
 
 		return customerMap;
 	}
+	
+	/**
+	 * <p>This Method takes transactionAmount as input and calculates the Reward points for the amount 
+	 * based on transaction AmountOver50_rule and AmountOver100_rule 
+	 * AmountOver50_rule: rewards points increment by 1
+	 * AmountOver100_rule: rewards points = 2 times (transaction Amount - 100)
+	 * </p>
+	 * @param transactionAmount
+	 * @return rewardPoints 
+	 */
 
 	private float getRewardPoints(float transactionAmount) {
 

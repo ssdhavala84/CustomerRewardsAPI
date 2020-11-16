@@ -11,11 +11,10 @@ import lombok.Data;
 @NoArgsConstructor
 @ToString
 @Builder
-public class CustomerRewardSummaryDto {
+public class CustomerRewardSummary {
 
 	private String customerName;
 	private float totalPoints;
-
 	private List<TransactionSummaryDto> transactionSummary;
 
 }

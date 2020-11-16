@@ -5,19 +5,13 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import com.customerrewards.entity.CustomerReward;
-
-import com.customerrewards.dto.CustomerRewardSummaryDto;
-
+import com.customerrewards.dto.CustomerRewardSummary;
 import lombok.extern.slf4j.Slf4j;
-
 import com.customerrewards.exception.CustomerRewardException;
 import com.customerrewards.mapper.CustomerRewardsMapper;
 import com.customerrewards.repository.ICustomerRewardsRepository;
@@ -31,12 +25,11 @@ public class CustomerRewardsSvcImpl implements ICustomerRewardsSvc {
 	private CustomerRewardsMapper data = new CustomerRewardsMapper();
 
 	@Override
-	public List<CustomerRewardSummaryDto> getCustomerRewardsSummary(String summary, Integer depth) {
+	public List<CustomerRewardSummary> getCustomerRewardsSummary(String summary, Integer depth) {
 		Instant startTime = Instant.now();
 		final List<CustomerReward> customerRewards = (List<CustomerReward>) customerRewardRepository
 				.findAllCustomerRewards(getMonths(depth));
-		Instant endTime = Instant.now();
-		log.info("Processing Time Get Entity: " + Duration.between(startTime, endTime));
+		log.info("Time to retrieve Data : " + Duration.between(startTime, Instant.now()));
 		if (customerRewards.isEmpty())
 			throw new CustomerRewardException(HttpStatus.NOT_FOUND.value(), "CutomerReward Not Found");
 		try {
